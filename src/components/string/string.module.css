@@ -1,0 +1,14 @@
+.form {
+  display: flex;
+  gap: 12px;
+  margin: 0 auto;
+  max-width: 522px;
+}
+
+.ul {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin: 0;
+  padding: 120px 0 0 0;
+}
