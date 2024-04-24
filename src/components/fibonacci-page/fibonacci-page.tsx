@@ -4,7 +4,7 @@ import { Input } from "../ui/input/input";
 import { Button } from "../ui/button/button";
 import { Circle } from "../ui/circle/circle";
 import styles from "./fibonacci-page.module.css";
-import { SHORT_DELAY_IN_MS } from "../../constants/delays";
+import { renderFib } from "./utils";
 
 export const FibonacciPage: React.FC = () => {
   const [fibArray, setFibArray] = useState<number[]>([]);
@@ -13,30 +13,6 @@ export const FibonacciPage: React.FC = () => {
 
   const initialFib = [1, 1];
 
-  const setDelay = (ms: number) => {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  };
-
-  const calcFibArray = (index: number, initialArr: number[]) => {
-    for (let i = 2; i <= index; i++) {
-      initialArr[i] = initialArr[i - 1] + initialArr[i - 2];
-    }
-
-    return initialArr;
-  };
-
-  const renderFib = async (index: number, initialArr: number[]) => {
-    setIsLoading(true);
-    setFibArray([]);
-    const fibArray = calcFibArray(index, initialArr);
-
-    for (let fib of fibArray) {
-      setFibArray((arr) => [...arr, fib]);
-      await setDelay(SHORT_DELAY_IN_MS);
-    }
-    setIsLoading(false);
-  };
-
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValues(e.target.value);
   };
@@ -44,7 +20,7 @@ export const FibonacciPage: React.FC = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    renderFib(Number(values), initialFib);
+    renderFib(Number(values), initialFib, setIsLoading, setFibArray);
   };
 
   return (

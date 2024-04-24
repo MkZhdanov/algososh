@@ -4,29 +4,14 @@ import { Input } from "../ui/input/input";
 import { Button } from "../ui/button/button";
 import { Circle } from "../ui/circle/circle";
 import { ElementTypes, ElementStates } from "../../types/element-states";
-import { DELAY_IN_MS } from "../../constants/delays";
 import styles from "./string.module.css";
 import { nanoid } from "nanoid";
+import { stringReverse } from "./utils";
 
 export const StringComponent: React.FC = () => {
   const [inputValue, setInputValue] = useState("");
   const [loader, setLoader] = useState(false);
   const [array, setArray] = useState<Array<ElementTypes>>();
-
-  const swap = (
-    value: ElementTypes[],
-    firstItem: number,
-    secondItem: number
-  ) => {
-    return ([value[firstItem], value[secondItem]] = [
-      value[secondItem],
-      value[firstItem],
-    ]);
-  };
-
-  function setDelay(delay: number) {
-    return new Promise<void>((res) => setTimeout(res, delay));
-  }
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -37,30 +22,7 @@ export const StringComponent: React.FC = () => {
     const newArray = inputValue.split("").map((letter: string) => {
       return { letter, state: ElementStates.Default };
     });
-    setArray(newArray);
-    setLoader(true);
-    const endString = newArray.length - 1;
-    const middleString = Math.ceil(newArray.length / 2);
-
-    for (let i = 0; i < middleString; i++) {
-      let j = endString - i;
-
-      if (i !== j) {
-        newArray[i].state = ElementStates.Changing;
-        newArray[j].state = ElementStates.Changing;
-        setArray([...newArray]);
-        await setDelay(DELAY_IN_MS);
-      }
-      swap(newArray, i, j);
-
-      newArray[i].state = ElementStates.Modified;
-      newArray[j].state = ElementStates.Modified;
-
-      setArray([...newArray]);
-    }
-
-    setLoader(false);
-    setInputValue("");
+    stringReverse(newArray, setLoader, setInputValue, setArray);
   };
 
   return (
@@ -72,7 +34,12 @@ export const StringComponent: React.FC = () => {
           onChange={onChange}
           value={inputValue}
         />
-        <Button text="Развернуть" isLoader={loader} type="submit" />
+        <Button
+          text="Развернуть"
+          isLoader={loader}
+          type="submit"
+          disabled={inputValue.length == 0}
+        />
       </form>
       <ul className={styles.ul}>
         {array?.map((item) => (

@@ -5,7 +5,7 @@ import { Button } from "../ui/button/button";
 import { ArrowIcon } from "../ui/icons/arrow-icon";
 import styles from "./list-page.module.css";
 import { nanoid } from "nanoid";
-import { NodeType, linkedList } from "./type";
+import { NodeType, linkedList } from "./utils";
 import {
   CirclePosition,
   CircleState,
@@ -13,6 +13,7 @@ import {
 } from "../../types/element-states";
 import { Circle } from "../ui/circle/circle";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
+import setDelay from "../../utils/delay";
 
 export const ListPage: React.FC = () => {
   const [state, setState] = useState({
@@ -36,10 +37,6 @@ export const ListPage: React.FC = () => {
     value: "",
     index: "",
   });
-
-  const setDelay = (ms: number) => {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  };
 
   const setCircleState = (
     index: number,

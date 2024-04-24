@@ -7,7 +7,7 @@ import styles from "./sorting-page.module.css";
 import { SortTypes, ElementStates } from "../../types/element-states";
 import { Direction } from "../../types/direction";
 import { nanoid } from "nanoid";
-import { SHORT_DELAY_IN_MS } from "../../constants/delays";
+import { selectSort, bubbleSort } from "./utils";
 
 export const SortingPage: React.FC = () => {
   const [radioValue, setRadioValue] = useState("selectionSort");
@@ -30,95 +30,29 @@ export const SortingPage: React.FC = () => {
     return arr;
   }
 
-  const swap = (value: SortTypes[], firstItem: number, secondItem: number) => {
-    return ([value[firstItem], value[secondItem]] = [
-      value[secondItem],
-      value[firstItem],
-    ]);
-  };
-
   const getNewArray = () => {
     setArray(randomArr());
   };
-
-  function setDelay(delay: number) {
-    return new Promise<void>((res) => setTimeout(res, delay));
-  }
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setRadioValue(e.target.value);
   };
 
-  const selectSort = async (arr: SortTypes[], order: Direction) => {
-    if (order === Direction.Ascending) {
-      setLoader({ ...loader, loader: true, ascending: true });
-    } else {
-      setLoader({ ...loader, loader: true, descending: true });
-    }
-    const { length } = arr;
-    for (let i = 0; i < length; i++) {
-      let maxInd = i;
-      arr[maxInd].state = ElementStates.Changing;
-      for (let j = i + 1; j < length; j++) {
-        arr[j].state = ElementStates.Changing;
-        setArray([...arr]);
-        await setDelay(SHORT_DELAY_IN_MS);
-        if (
-          order === Direction.Ascending
-            ? arr[j].index < arr[maxInd].index
-            : arr[j].index > arr[maxInd].index
-        ) {
-          maxInd = j;
-          arr[j].state = ElementStates.Changing;
-          arr[maxInd].state =
-            i === maxInd ? ElementStates.Changing : ElementStates.Default;
-        }
-        if (j !== maxInd) {
-          array[j].state = ElementStates.Default;
-        }
-        setArray([...arr]);
-      }
-      swap(array, maxInd, i);
-      array[maxInd].state = ElementStates.Default;
-      array[i].state = ElementStates.Modified;
-      setArray([...array]);
-    }
-    setLoader({ loader: false, descending: false, ascending: false });
-  };
-
-  const bubbleSort = async (arr: SortTypes[], order: Direction) => {
-    if (order === Direction.Ascending) {
-      setLoader({ ...loader, loader: true, ascending: true });
-    } else {
-      setLoader({ ...loader, loader: true, descending: true });
-    }
-    const { length } = arr;
-    for (let i = 0; i < length; i++) {
-      for (let j = 0; j < length - i - 1; j++) {
-        arr[j].state = ElementStates.Changing;
-        arr[j + 1].state = ElementStates.Changing;
-        setArray([...array]);
-        await setDelay(SHORT_DELAY_IN_MS);
-        if (
-          order === Direction.Ascending
-            ? arr[j].index > arr[j + 1].index
-            : arr[j].index < arr[j + 1].index
-        ) {
-          swap(arr, j, j + 1);
-        }
-        arr[j].state = ElementStates.Default;
-      }
-      arr[arr.length - i - 1].state = ElementStates.Modified;
-      setArray([...arr]);
-    }
-    setLoader({ loader: false, descending: false, ascending: false });
-  };
-
   const handleSort = (order: Direction) => {
     if (radioValue === "selectionSort") {
-      selectSort(array, order);
+      if (order === Direction.Ascending) {
+        setLoader({ ...loader, loader: true, ascending: true });
+      } else {
+        setLoader({ ...loader, loader: true, descending: true });
+      }
+      selectSort(array, order, setLoader, setArray);
     } else {
-      bubbleSort(array, order);
+      if (order === Direction.Ascending) {
+        setLoader({ ...loader, loader: true, ascending: true });
+      } else {
+        setLoader({ ...loader, loader: true, descending: true });
+      }
+      bubbleSort(array, order, setLoader, setArray);
     }
   };
 

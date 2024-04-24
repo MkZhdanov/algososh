@@ -7,8 +7,9 @@ import { TAIL, HEAD } from "../../constants/element-captions";
 import { ElementStates } from "../../types/element-states";
 import styles from "./queue-page.module.css";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
-import { queue } from "./type";
+import { queue } from "./utils";
 import { nanoid } from "nanoid";
+import setDelay from "../../utils/delay";
 
 export const QueuePage: React.FC = () => {
   const [inputValue, setInputValue] = useState("");
@@ -19,10 +20,6 @@ export const QueuePage: React.FC = () => {
     delete: false,
     clear: false,
   });
-
-  const setDelay = (ms: number) => {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  };
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);

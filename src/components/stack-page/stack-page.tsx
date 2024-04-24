@@ -5,8 +5,9 @@ import { Button } from "../ui/button/button";
 import { Circle } from "../ui/circle/circle";
 import styles from "./stack-page.module.css";
 import { ElementTypes, ElementStates } from "../../types/element-states";
-import { Stack } from "./type";
+import { Stack } from "./utils";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
+import setDelay from "../../utils/delay";
 
 export const StackPage: React.FC = () => {
   const [stackToRender, setStackToRender] = useState<ElementTypes[]>([]);
@@ -17,10 +18,6 @@ export const StackPage: React.FC = () => {
     delete: false,
     clear: false,
   });
-
-  const setDelay = (ms: number) => {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  };
 
   const stack = useMemo(() => new Stack<ElementTypes>(), []);
 
