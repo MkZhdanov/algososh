@@ -41,7 +41,7 @@ export const StringComponent: React.FC = () => {
           text="Развернуть"
           isLoader={loader}
           type="submit"
-          disabled={inputValue.length == 0}
+          disabled={inputValue.length === 0}
         />
       </form>
       <ul className={styles.ul}>
