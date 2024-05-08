@@ -7,11 +7,13 @@ import { ElementTypes, ElementStates } from "../../types/element-states";
 import styles from "./string.module.css";
 import { nanoid } from "nanoid";
 import { stringReverse } from "./utils";
+import useMounted from "../../utils/useMounted";
 
 export const StringComponent: React.FC = () => {
   const [inputValue, setInputValue] = useState("");
   const [loader, setLoader] = useState(false);
   const [array, setArray] = useState<Array<ElementTypes>>();
+  const isMounted = useMounted();
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -22,6 +24,7 @@ export const StringComponent: React.FC = () => {
     const newArray = inputValue.split("").map((letter: string) => {
       return { letter, state: ElementStates.Default };
     });
+    if (!isMounted.current) return;
     stringReverse(newArray, setLoader, setInputValue, setArray);
   };
 

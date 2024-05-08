@@ -8,6 +8,7 @@ import { SortTypes, ElementStates } from "../../types/element-states";
 import { Direction } from "../../types/direction";
 import { nanoid } from "nanoid";
 import { selectSort, bubbleSort } from "./utils";
+import useMounted from "../../utils/useMounted";
 
 export const SortingPage: React.FC = () => {
   const [radioValue, setRadioValue] = useState("selectionSort");
@@ -17,6 +18,7 @@ export const SortingPage: React.FC = () => {
     descending: false,
     loader: false,
   });
+  const isMounted = useMounted();
 
   function randomArr(): SortTypes[] {
     const minLen = 3;
@@ -45,6 +47,7 @@ export const SortingPage: React.FC = () => {
       } else {
         setLoader({ ...loader, loader: true, descending: true });
       }
+      if (!isMounted.current) return;
       selectSort(array, order, setLoader, setArray);
     } else {
       if (order === Direction.Ascending) {
@@ -52,6 +55,7 @@ export const SortingPage: React.FC = () => {
       } else {
         setLoader({ ...loader, loader: true, descending: true });
       }
+      if (!isMounted.current) return;
       bubbleSort(array, order, setLoader, setArray);
     }
   };

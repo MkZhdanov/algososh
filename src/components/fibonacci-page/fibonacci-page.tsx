@@ -5,11 +5,13 @@ import { Button } from "../ui/button/button";
 import { Circle } from "../ui/circle/circle";
 import styles from "./fibonacci-page.module.css";
 import { renderFib } from "./utils";
+import useMounted from "../../utils/useMounted";
 
 export const FibonacciPage: React.FC = () => {
   const [fibArray, setFibArray] = useState<number[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [values, setValues] = useState("");
+  const isMounted = useMounted();
 
   const initialFib = [1, 1];
 
@@ -19,7 +21,7 @@ export const FibonacciPage: React.FC = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    if (!isMounted.current) return;
     renderFib(Number(values), initialFib, setIsLoading, setFibArray);
   };
 
