@@ -1,0 +1,21 @@
+.form {
+  margin: 0 auto;
+  max-width: 829px;
+  display: flex;
+  gap: 12px;
+}
+
+.symbolList {
+  max-width: 944px;
+  margin: 0 auto;
+  padding: 48px 0 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  row-gap: 78px;
+  column-gap: 16px;
+}
+
+.button {
+  margin-left: 68px;
+}
