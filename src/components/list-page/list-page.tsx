@@ -191,6 +191,7 @@ export const ListPage: React.FC = () => {
             name="value"
             value={inputValue.value}
             onChange={onChange}
+            data="input-value"
           />
           <Button
             type="button"
@@ -238,6 +239,7 @@ export const ListPage: React.FC = () => {
             max={array.length - 1}
             value={inputValue.index}
             onChange={onChange}
+            data="input-index"
           />
           <Button
             type="button"
